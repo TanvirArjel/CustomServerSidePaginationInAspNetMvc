@@ -18,7 +18,7 @@
     }
 
 </style>
-<table class="table">
+<table class="table table-bordered table-striped">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.EmployeeName)
@@ -100,7 +100,7 @@
                 if (ViewBag.CurrentPage > (ViewBag.PageToShow - 1))
                 {
                     <li><a href="@Url.Action("Index", "Employee", new {page = 1})">1</a></li>
-                    <li><a>......</a></li>
+                    <li><a>....</a></li>
 
                     if (ViewBag.CurrentPage + 3 >= ViewBag.TotalPages)
                     {
@@ -167,7 +167,7 @@
                 {
                     hideDotCss = "hidden";
                 }
-                <li class="@hideDotCss"><a>.....</a></li>
+                <li class="@hideDotCss"><a>....</a></li>
             }
 
 
