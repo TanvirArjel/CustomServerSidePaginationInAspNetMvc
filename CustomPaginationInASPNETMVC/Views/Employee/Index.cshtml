@@ -1,0 +1,231 @@
+﻿@model IEnumerable<CustomPaginationInASPNETMVC.Models.Employee>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+<style>
+    .MakeDisabled {
+        pointer-events: none;
+        cursor: not-allowed;
+        opacity: .65;
+    }
+
+</style>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.EmployeeName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Position)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Office)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Age)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StartDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Salary)
+        </th>
+        <th>Actions</th>
+    </tr>
+
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.EmployeeName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Position)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Office)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Age)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Salary)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id=item.EmployeeId }) |
+                @Html.ActionLink("Details", "Details", new { id=item.EmployeeId }) |
+                @Html.ActionLink("Delete", "Delete", new { id=item.EmployeeId })
+            </td>
+        </tr>
+    }
+
+</table>
+
+<div>
+    <div class="col-md-6 text-center" style="padding-left: 0;padding-right: 0">
+        <h4>This is for medium and very large DataSet</h4>
+    </div>
+    <div class="col-md-6 text-center" style="padding-left: 0;padding-right: 0">
+        <h4>This for Small DataSet</h4>
+    </div>
+</div>
+
+<div>
+    <div class="col-md-6" style="padding-left: 0;padding-right: 0">
+        <!--This is for medium and very large DataSet-->
+        <ul class="pagination">
+            @{
+                string prevDisabled = "";
+                if (ViewBag.CurrentPage == 1)
+                {
+                    prevDisabled = "MakeDisabled";
+                }
+            }
+
+            <li>
+                <a class="@prevDisabled" href="@Url.Action("Index", "Employee", new {page = @ViewBag.CurrentPage - 1})">Previous</a>
+            </li>
+
+            @{
+                if (ViewBag.CurrentPage > (ViewBag.PageToShow - 1))
+                {
+                    <li><a href="@Url.Action("Index", "Employee", new {page = 1})">1</a></li>
+                    <li><a>......</a></li>
+
+                    if (ViewBag.CurrentPage + 3 >= ViewBag.TotalPages)
+                    {
+                        for (int i = ViewBag.TotalPages - 4; i < ViewBag.TotalPages; i++)
+                        {
+                            string currentPageCss = "";
+
+                            if (i == ViewBag.CurrentPage)
+                            {
+                                currentPageCss = "active";
+                            }
+                            <li class="@currentPageCss">
+                                <a href="@Url.Action("Index", "Employee", new {page = i})">@i</a>
+                            </li>
+                        }
+                    }
+                    else
+                    {
+                        for (int i = ViewBag.CurrentPage - 2; i <= ViewBag.CurrentPage + 2; i++)
+                        {
+
+                            string currentPageCss = "";
+
+                            if (i == ViewBag.CurrentPage)
+                            {
+                                currentPageCss = "active";
+                            }
+                            <li class="@currentPageCss">
+                                <a href="@Url.Action("Index", "Employee", new {page = i})">@i</a>
+                            </li>
+                        }
+                    }
+                }
+
+                else
+                {
+                    for (int i = 1; i <= ViewBag.PageToShow; i++)
+                    {
+
+                        string currentPageCss = "";
+
+                        if (i == ViewBag.CurrentPage)
+                        {
+                            currentPageCss = "active";
+                        }
+                        <li class="@currentPageCss">
+                            <a href="@Url.Action("Index", "Employee", new {page = i})">@i</a>
+                        </li>
+                    }
+                }
+            }
+
+            @{
+                string nextDisabled = "";
+                if (ViewBag.CurrentPage == ViewBag.TotalPages)
+                {
+                    nextDisabled = "MakeDisabled";
+                }
+            }
+
+            @{
+                string hideDotCss = "";
+                if (ViewBag.CurrentPage + 3 >= ViewBag.TotalPages)
+                {
+                    hideDotCss = "hidden";
+                }
+                <li class="@hideDotCss"><a>.....</a></li>
+            }
+
+
+            <li>
+                <a href="@Url.Action("Index", "Employee", new {page = ViewBag.TotalPages})">@ViewBag.TotalPages</a>
+            </li>
+
+            <li>
+                <a class="@nextDisabled" , href="@Url.Action("Index", "Employee", new {page = @ViewBag.CurrentPage + 1})">Next</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="col-md-6" style="padding-left: 0;padding-right: 0">
+        <!--This is for Small DataSet-->
+        <ul class="pagination pull-right">
+
+
+            @{
+                string prevDisabled1 = "";
+                if (ViewBag.CurrentPage == 1)
+                {
+                    prevDisabled1 = "MakeDisabled";
+                }
+            }
+
+            <li>
+                <a class="@prevDisabled1" href="@Url.Action("Index", "Employee", new {page = @ViewBag.CurrentPage - 1})">Previous</a>
+            </li>
+
+
+
+            @for (int i = 1; i <= ViewBag.TotalPages; i++)
+            {
+
+                string currentPageCss = "";
+
+                if (i == ViewBag.CurrentPage)
+                {
+                    currentPageCss = "active";
+                }
+                <li class="@currentPageCss">
+                    <a href="@Url.Action("Index", "Employee", new {page = i})">@i</a>
+                </li>
+            }
+
+            @{
+                string nextDisabled1 = "";
+                if (ViewBag.CurrentPage == ViewBag.TotalPages)
+                {
+                    nextDisabled1 = "MakeDisabled";
+                }
+            }
+
+
+            <li>
+                <a class="@nextDisabled1" , href="@Url.Action("Index", "Employee", new {page = @ViewBag.CurrentPage + 1})">Next</a>
+            </li>
+        </ul>
+    </div>
+</div>
