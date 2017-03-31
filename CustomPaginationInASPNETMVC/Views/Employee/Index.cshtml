@@ -14,7 +14,7 @@
     .MakeDisabled {
         pointer-events: none;
         cursor: not-allowed;
-        opacity: .65;
+        /*opacity: .65;*/
     }
 
 </style>
@@ -97,36 +97,58 @@
             </li>
 
             @{
-                if (ViewBag.CurrentPage > (ViewBag.PageToShow - 1))
+
+                if (ViewBag.TotalPages > ViewBag.PageToShow)
                 {
-                    <li><a href="@Url.Action("Index", "Employee", new {page = 1})">1</a></li>
-                    <li><a>....</a></li>
-
-                    if (ViewBag.CurrentPage + 3 >= ViewBag.TotalPages)
+                    if (ViewBag.CurrentPage > (ViewBag.PageToShow - 2))
                     {
-                        for (int i = ViewBag.TotalPages - 4; i < ViewBag.TotalPages; i++)
-                        {
-                            string currentPageCss = "";
+                        <li><a href="@Url.Action("Index", "Employee", new {page = 1})">1</a></li>
+                        <li><a>....</a></li>
 
-                            if (i == ViewBag.CurrentPage)
+                        if (ViewBag.CurrentPage + 2 >= ViewBag.TotalPages)
+                        {
+                            
+                            for (int i = ViewBag.TotalPages - 3; i < ViewBag.TotalPages; i++)
                             {
-                                currentPageCss = "active";
+                                string currentPageCss = "";
+
+                                if (i == ViewBag.CurrentPage)
+                                {
+                                    currentPageCss = "active MakeDisabled";
+                                }
+                                <li class="@currentPageCss">
+                                    <a href="@Url.Action("Index", "Employee", new {page = i})">@i</a>
+                                </li>
                             }
-                            <li class="@currentPageCss">
-                                <a href="@Url.Action("Index", "Employee", new {page = i})">@i</a>
-                            </li>
+                        }
+                        else
+                        {
+                            for (int i = ViewBag.CurrentPage - 1; i <= ViewBag.CurrentPage + 1; i++)
+                            {
+
+                                string currentPageCss = "";
+
+                                if (i == ViewBag.CurrentPage)
+                                {
+                                    currentPageCss = "active MakeDisabled";
+                                }
+                                <li class="@currentPageCss">
+                                    <a href="@Url.Action("Index", "Employee", new {page = i})">@i</a>
+                                </li>
+                            }
                         }
                     }
+
                     else
                     {
-                        for (int i = ViewBag.CurrentPage - 2; i <= ViewBag.CurrentPage + 2; i++)
+                        for (int i = 1; i <= ViewBag.PageToShow-1; i++)
                         {
 
                             string currentPageCss = "";
 
                             if (i == ViewBag.CurrentPage)
                             {
-                                currentPageCss = "active";
+                                currentPageCss = "active MakeDisabled";
                             }
                             <li class="@currentPageCss">
                                 <a href="@Url.Action("Index", "Employee", new {page = i})">@i</a>
@@ -134,23 +156,23 @@
                         }
                     }
                 }
-
                 else
                 {
-                    for (int i = 1; i <= ViewBag.PageToShow; i++)
+                    for (int i = 1; i <= ViewBag.TotalPages; i++)
                     {
 
                         string currentPageCss = "";
 
                         if (i == ViewBag.CurrentPage)
                         {
-                            currentPageCss = "active";
+                            currentPageCss = "active MakeDisabled";
                         }
                         <li class="@currentPageCss">
                             <a href="@Url.Action("Index", "Employee", new {page = i})">@i</a>
                         </li>
                     }
                 }
+
             }
 
             @{
@@ -163,17 +185,28 @@
 
             @{
                 string hideDotCss = "";
-                if (ViewBag.CurrentPage + 3 >= ViewBag.TotalPages)
+                if (ViewBag.CurrentPage + 2 >= ViewBag.TotalPages)
                 {
                     hideDotCss = "hidden";
                 }
                 <li class="@hideDotCss"><a>....</a></li>
             }
 
+            @if (ViewBag.TotalPages > ViewBag.PageToShow)
+            {
 
-            <li>
-                <a href="@Url.Action("Index", "Employee", new {page = ViewBag.TotalPages})">@ViewBag.TotalPages</a>
-            </li>
+                string currentPageCss = "";
+
+                if (ViewBag.CurrentPage == ViewBag.TotalPages)
+                {
+                    currentPageCss = "active MakeDisabled";
+                }
+                <li class="@currentPageCss">
+                    <a href="@Url.Action("Index", "Employee", new {page = ViewBag.TotalPages})">@ViewBag.TotalPages</a>
+                </li>
+            }
+
+           
 
             <li>
                 <a class="@nextDisabled" , href="@Url.Action("Index", "Employee", new {page = @ViewBag.CurrentPage + 1})">Next</a>
@@ -207,7 +240,7 @@
 
                 if (i == ViewBag.CurrentPage)
                 {
-                    currentPageCss = "active";
+                    currentPageCss = "active MakeDisabled";
                 }
                 <li class="@currentPageCss">
                     <a href="@Url.Action("Index", "Employee", new {page = i})">@i</a>
