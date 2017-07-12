@@ -21,10 +21,35 @@ namespace CustomPaginationInASPNETMVC.Controllers
         public async Task<ActionResult> Index(int page = 1)
         {
             List<Employee> employees = await db.Employees.OrderBy(x => x.EmployeeId).Skip((page - 1) * PageSize).Take(PageSize).ToListAsync();
+            var totalItems = db.Employees.Count();
+            ViewBag.TotalItems = totalItems;
             ViewBag.CurrentPage = page;
             ViewBag.PageSize = PageSize;
-            ViewBag.PageToShow = 5;
-            ViewBag.TotalPages = Convert.ToInt32(Math.Ceiling((double)db.Employees.Count() / PageSize));
+            ViewBag.PageButtonToShow = 5;
+            ViewBag.TotalPages = Convert.ToInt32(Math.Ceiling((double)totalItems / PageSize));
+
+            int pageItemStarts = 0;
+            if (totalItems > 0)
+            {
+                pageItemStarts = ((page - 1) * PageSize) + 1;
+            }
+            ViewBag.PageItemStarts = pageItemStarts;
+
+            int pageItemTo = 0;
+            if (totalItems > 0)
+            {
+                if (page * PageSize > totalItems)
+                {
+                    pageItemTo = totalItems;
+                }
+                else
+                {
+                    pageItemTo = page * PageSize;
+                }
+            }
+
+            ViewBag.PageItemTo = pageItemTo;
+
             return View(employees);
         }
 
