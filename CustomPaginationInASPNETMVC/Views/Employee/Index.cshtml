@@ -173,34 +173,48 @@
                                     }
 
                                 }
+                                
+                                
                                 @{
+
+                                    string hideDotCss = "";
+                                    if (ViewBag.TotalPages <= ViewBag.PageButtonToShow)
+                                    {
+                                        hideDotCss = "hidden";
+                                    }
+                                    else
+                                    {
+                                        if (ViewBag.CurrentPage + 2 >= ViewBag.TotalPages)
+                                        {
+                                            hideDotCss = "hidden";
+                                        }
+                                    }
+                                    
+                                    <li class="@hideDotCss"><a>....</a></li>
+
+
+                                    if (ViewBag.TotalPages > ViewBag.PageButtonToShow)
+                                    {
+
+                                        string currentPageCss = "";
+
+                                        if (ViewBag.CurrentPage == ViewBag.TotalPages)
+                                        {
+                                            currentPageCss = "active MakeDisabled";
+                                        }
+                                        <li class="@currentPageCss">
+                                            <a href="@Url.Action("Index", "Employee", new {page = ViewBag.TotalPages})">@ViewBag.TotalPages</a>
+                                        </li>
+                                    }
+
                                     string nextDisabled = "";
                                     if (ViewBag.CurrentPage == ViewBag.TotalPages || ViewBag.TotalItems == 0)
                                     {
                                         nextDisabled = "MakeDisabled";
                                     }
                                 }
-                                @{
-                                    string hideDotCss = "";
-                                    if (ViewBag.CurrentPage + 2 >= ViewBag.TotalPages)
-                                    {
-                                        hideDotCss = "hidden";
-                                    }
-                                    <li class="@hideDotCss"><a>....</a></li>
-                                }
-                                @if (ViewBag.TotalPages > ViewBag.PageButtonToShow)
-                                {
 
-                                    string currentPageCss = "";
-
-                                    if (ViewBag.CurrentPage == ViewBag.TotalPages)
-                                    {
-                                        currentPageCss = "active MakeDisabled";
-                                    }
-                                    <li class="@currentPageCss">
-                                        <a href="@Url.Action("Index", "Employee", new {page = ViewBag.TotalPages})">@ViewBag.TotalPages</a>
-                                    </li>
-                                }
+                               
 
                                 <li>
                                     <a class="@nextDisabled" , href="@Url.Action("Index", "Employee", new {page = @ViewBag.CurrentPage + 1})">Next</a>
